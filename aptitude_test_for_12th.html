@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aptitude Test for 12th Pass Students</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            color: blue;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            padding: 20px;
+            border: 1px solid blue;
+            border-radius: 10px;
+            margin: 20px auto;
+            background-color: lightblue;
+            display: none; /* Hidden initially */
+            max-width: 500px; /* Limit the width */
+        }
+        button {
+            padding: 10px 20px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: darkblue;
+        }
+        #start-button {
+            display: block;
+            margin: 50px auto;
+            padding: 10px 30px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Aptitude Test for 12th Pass Students</h1>
+    
+    <button id="start-button" onclick="startTest()">Start Test</button>
+
+    <div id="question-container" class="container">
+        <h2 id="question-text"></h2>
+        <button onclick="answerQuestion(0)">Option 1</button>
+        <button onclick="answerQuestion(1)">Option 2</button>
+        <button onclick="answerQuestion(2)">Option 3</button>
+        <button onclick="answerQuestion(3)">Option 4</button>
+    </div>
+    
+    <div id="result" class="container">
+        <h2>Your Suggested Career Option:</h2>
+        <p id="career-suggestion"></p>
+        <button onclick="restartTest()">Restart Test</button>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What subject interests you the most?",
+                options: ["Physics", "Mathematics", "Literature", "Business"],
+                career: ["Engineer", "Data Scientist", "Writer", "Entrepreneur"]
+            },
+            {
+                question: "How do you prefer to work?",
+                options: ["Independently", "In teams", "Creatively", "Logically"],
+                career: ["Researcher", "Project Manager", "Designer", "Analyst"]
+            },
+            {
+                question: "Which activity do you enjoy the most?",
+                options: ["Solving problems", "Creating art", "Reading novels", "Planning events"],
+                career: ["Scientist", "Artist", "Author", "Event Manager"]
+            },
+            {
+                question: "What motivates you in a job?",
+                options: ["Innovation", "Creativity", "Helping others", "Financial success"],
+                career: ["Inventor", "Designer", "Social Worker", "Investor"]
+            },
+            {
+                question: "How do you handle challenges?",
+                options: ["Through research", "By brainstorming", "With creativity", "With strategic planning"],
+                career: ["Engineer", "Creative Director", "Consultant", "Financial Advisor"]
+            },
+            {
+                question: "What type of projects do you prefer?",
+                options: ["Technical", "Creative", "Literary", "Business-related"],
+                career: ["Software Developer", "Graphic Designer", "Editor", "Business Analyst"]
+            },
+            {
+                question: "Do you enjoy working with numbers?",
+                options: ["Yes, a lot", "Sometimes", "Not really", "Only in finance"],
+                career: ["Statistician", "Economist", "Artist", "Entrepreneur"]
+            },
+            {
+                question: "What is your ideal work environment?",
+                options: ["Laboratory", "Studio", "Library", "Office"],
+                career: ["Scientist", "Artist", "Writer", "Business Executive"]
+            },
+            {
+                question: "How do you express your ideas?",
+                options: ["Through calculations", "Through art", "Through writing", "Through presentations"],
+                career: ["Engineer", "Artist", "Author", "Marketing Specialist"]
+            },
+            {
+                question: "Which of these best describes you?",
+                options: ["Analytical", "Creative", "Empathetic", "Pragmatic"],
+                career: ["Analyst", "Creative Director", "Counselor", "Project Manager"]
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        const scores = {
+            Engineer: 0,
+            Data_Scientist: 0,
+            Writer: 0,
+            Entrepreneur: 0,
+            Researcher: 0,
+            Project_Manager: 0,
+            Designer: 0,
+            Analyst: 0,
+            Scientist: 0,
+            Artist: 0,
+            Author: 0,
+            Event_Manager: 0,
+            Inventor: 0,
+            Creative_Director: 0,
+            Social_Worker: 0,
+            Investor: 0,
+            Software_Developer: 0,
+            Graphic_Designer: 0,
+            Editor: 0,
+            Business_Analyst: 0,
+            Statistician: 0,
+            Economist: 0,
+            Marketing_Specialist: 0,
+            Business_Executive: 0,
+            Counselor: 0,
+            Pragmatic: 0
+        };
+
+        function startTest() {
+            document.getElementById('start-button').style.display = 'none';
+            document.getElementById('question-container').style.display = 'block';
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const currentQuestion = questions[currentQuestionIndex];
+            document.getElementById('question-text').textContent = currentQuestion.question;
+
+            const buttons = document.querySelectorAll('#question-container button');
+            buttons.forEach((button, index) => {
+                button.textContent = currentQuestion.options[index];
+            });
+        }
+
+        function answerQuestion(selectedOption) {
+            const currentQuestion = questions[currentQuestionIndex];
+            const selectedCareer = currentQuestion.career[selectedOption];
+            scores[selectedCareer]++;
+
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            const resultContainer = document.getElementById('result');
+            const suggestedCareer = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+            document.getElementById('career-suggestion').textContent = `We suggest you consider pursuing a career as a ${suggestedCareer.replace(/_/g, ' ')}.`;
+
+            document.getElementById('question-container').style.display = 'none';
+            resultContainer.style.display = 'block';
+        }
+
+        function restartTest() {
+            currentQuestionIndex = 0;
+            for (const key in scores) {
+                scores[key] = 0;
+            }
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('start-button').style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
+
+
+
